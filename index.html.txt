@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyAI | Student Assistant</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #0b0b16;
+  --panel: #151525;
+  --panel2: #1c1c30;
+  --purple: #8b5cf6;
+  --blue: #6366f1;
+  --text: #f5f5ff;
+  --muted: #9898b5;
+  --border: #292940;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 245px;
+  background: #10101e;
+  border-right: 1px solid var(--border);
+  padding: 25px 16px;
+  position: fixed;
+  height: 100vh;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  padding-left: 12px;
+}
+
+.logo span {
+  color: var(--purple);
+}
+
+.nav-label {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 20px 12px 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.nav-item {
+  display: block;
+  padding: 13px 15px;
+  border-radius: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  margin-bottom: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background: #29203e;
+  color: #c4b5fd;
+}
+
+.sidebar-bottom {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  right: 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.main {
+  margin-left: 245px;
+  width: calc(100% - 245px);
+  padding: 35px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  gap: 15px;
+}
+
+.topbar h1 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.topbar p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.profile {
+  background: var(--panel2);
+  padding: 12px 17px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.hero {
+  background: linear-gradient(120deg, #37205f, #25275e, #171a37);
+  padding: 35px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #494078;
+}
+
+.hero h2 {
+  font-size: 29px;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: #c7c4e7;
+  line-height: 1.7;
+  font-size: 14px;
+  max-width: 600px;
+}
+
+.btn {
+  background: var(--purple);
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn:hover {
+  background: #7543db;
+}
+
+.section-title {
+  font-size: 19px;
+  margin-bottom: 18px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 22px;
+  border-radius: 16px;
+}
+
+.stat-icon {
+  font-size: 23px;
+  margin-bottom: 15px;
+}
+
+.stat-number {
+  font-size: 27px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.tool-card {
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--purple);
+}
+
+.tool-card h3 {
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.tool-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.tool-icon {
+  width: 45px;
+  height: 45px;
+  background: #30224d;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+}
+
+textarea,
+input,
+select {
+  width: 100%;
+  padding: 13px;
+  background: #10101e;
+  border: 1px solid var(--border);
+  color: white;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  margin: 8px 0;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+textarea:focus,
+input:focus {
+  border-color: var(--purple);
+}
+
+.result {
+  background: #10101e;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 15px;
+  line-height: 1.8;
+  font-size: 13px;
+  color: #d7d5f2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.task {
+  display: flex;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.task input {
+  width: auto;
+  margin: 0;
+}
+
+.task label {
+  color: #d5d5eb;
+}
+
+#notesList {
+  margin-top: 15px;
+}
+
+.note {
+  padding: 12px;
+  background: #10101e;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+  margin-top: 40px;
+}
+
+@media (max-width: 1000px) {
+  .sidebar {
+    width: 190px;
+  }
+
+  .main {
+    margin-left: 190px;
+    width: calc(100% - 190px);
+    padding: 25px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tools {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  body {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+
+  .logo {
+    margin-bottom: 15px;
+  }
+
+  .nav-label,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .nav-item {
+    display: inline-block;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .main {
+    margin: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .hero {
+    padding: 25px;
+  }
+
+  .hero h2 {
+    font-size: 23px;
+  }
+
+  .stats,
+  .tools,
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+  <div class="logo">Study<span>AI.</span></div>
+
+  <div class="nav-label">Main Menu</div>
+
+  <a class="nav-item active" onclick="showPage('dashboard',this)">⌂ Dashboard</a>
+  <a class="nav-item" onclick="showPage('assistant',this)">✦ AI Assistant</a>
+  <a class="nav-item" onclick="showPage('notes',this)">▤ My Notes</a>
+  <a class="nav-item" onclick="showPage('quiz',this)">✎ Quiz Generator</a>
+  <a class="nav-item" onclick="showPage('planner',this)">◷ Study Planner</a>
+
+  <div class="sidebar-bottom">
+    Your personal AI learning companion ✨
+  </div>
+
+</aside>
+
+<main class="main">
+
+  <header class="topbar">
+    <div>
+      <h1 id="pageTitle">Student Dashboard</h1>
+      <p id="pageSubtitle">Your personal space to learn, grow, and succeed.</p>
+    </div>
+
+    <div class="profile">👩‍🎓 Student</div>
+  </header>
+
+  <!-- DASHBOARD -->
+
+  <section id="dashboard">
+
+    <div class="hero">
+      <h2>Learn smarter with StudyAI ✨</h2>
+      <p>
+        Your intelligent study companion. Summarize notes,
+        generate quizzes, organize your study schedule, and
+        make learning easier every day.
+      </p>
+
+      <button class="btn" onclick="showPage('assistant')">
+        Start Learning →
+      </button>
+    </div>
+
+    <h2 class="section-title">Your Overview</h2>
+
+    <div class="stats">
+
+      <div class="card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-number" id="notesCount">0</div>
+        <div class="stat-label">Saved Notes</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">🧠</div>
+        <div class="stat-number" id="quizCount">0</div>
+        <div class="stat-label">Quizzes Created</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-number" id="taskCount">0</div>
+        <div class="stat-label">Study Tasks</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-number">AI</div>
+        <div class="stat-label">Learning Assistant</div>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">Explore Your Tools</h2>
+
+    <div class="tools">
+
+      <div class="card tool-card" onclick="showPage('assistant')">
+        <div class="tool-icon">✦</div>
+        <h3>AI Study Assistant</h3>
+        <p>Ask questions and get simple explanations of difficult topics.</p>
+      </div>
+
+      <div class="card tool-card" onclick="showPage('notes')">
+        <div class="tool-icon">📝</div>
+        <h3>Smart Notes</h3>
+        <p>Save your study notes and keep your learning organized.</p>
+      </div>
+
+      <div class="card tool-card" onclick="showPage('quiz')">
+        <div class="tool-icon">🧠</div>
+        <h3>Quiz Generator</h3>
+        <p>Practice questions and test your understanding.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- AI ASSISTANT -->
+
+  <section id="assistant" class="hidden">
+
+    <div class="card">
+      <div class="tool-icon">✦</div>
+      <h2 style="margin:15px 0">Ask StudyAI</h2>
+
+      <p style="color:var(--muted);font-size:13px;line-height:1.8">
+        Enter a topic or question to receive a study explanation.
+      </p>
+
+      <textarea id="question"
+        placeholder="Example: Explain artificial intelligence in simple words..."></textarea>
+
+      <button class="btn" onclick="askAI()">Generate Answer ✨</button>
+
+      <div id="answer" class="result hidden"></div>
+    </div>
+
+  </section>
+
+  <!-- NOTES -->
+
+  <section id="notes" class="hidden">
+
+    <div class="card">
+      <h2>My Study Notes</h2>
+
+      <input id="noteTitle" placeholder="Enter note title">
+
+      <textarea id="noteText"
+        placeholder="Write your study notes here..."></textarea>
+
+      <button class="btn" onclick="saveNote()">Save Note</button>
+
+      <div id="notesList"></div>
+    </div>
+
+  </section>
+
+  <!-- QUIZ -->
+
+  <section id="quiz" class="hidden">
+
+    <div class="card">
+      <h2>Quiz Generator 🧠</h2>
+
+      <p style="color:var(--muted);font-size:13px;margin:12px 0">
+        Create a practice quiz using your chosen subject.
+      </p>
+
+      <input id="quizTopic" placeholder="Enter subject (e.g. Biology)">
+
+      <button class="btn" onclick="generateQuiz()">Generate Quiz</button>
+
+      <div id="quizResult" class="result hidden"></div>
+    </div>
+
+  </section>
+
+  <!-- PLANNER -->
+
+  <section id="planner" class="hidden">
+
+    <div class="card">
+      <h2>Study Planner 📅</h2>
+
+      <input id="taskInput" placeholder="Enter your study task">
+
+      <button class="btn" onclick="addTask()">Add Task</button>
+
+      <div id="taskList" style="margin-top:20px"></div>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2026 StudyAI | Designed for smarter learning
+  </footer>
+
+</main>
+
+<script>
+
+let notes = [];
+let quizzes = 0;
+let tasks = [];
+
+function showPage(page, element) {
+
+  document.querySelectorAll("main section").forEach(section => {
+    section.classList.add("hidden");
+  });
+
+  document.getElementById(page).classList.remove("hidden");
+
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.classList.remove("active");
+  });
+
+  if (element) {
+    element.classList.add("active");
+  }
+
+  const titles = {
+    dashboard: ["Student Dashboard", "Your personal space to learn, grow, and succeed."],
+    assistant: ["AI Study Assistant", "Ask questions and explore new concepts."],
+    notes: ["My Study Notes", "Keep all your learning materials organized."],
+    quiz: ["Quiz Generator", "Test your knowledge and improve your skills."],
+    planner: ["Study Planner", "Organize your daily study routine."]
+  };
+
+  document.getElementById("pageTitle").textContent = titles[page][0];
+  document.getElementById("pageSubtitle").textContent = titles[page][1];
+
+}
+
+function askAI() {
+
+  const question = document.getElementById("question").value.trim();
+  const answer = document.getElementById("answer");
+
+  if (!question) {
+    alert("Please enter a question first!");
+    return;
+  }
+
+  answer.classList.remove("hidden");
+
+  answer.textContent =
+    "StudyAI Demo Response\n\n" +
+    "Your question: " + question + "\n\n" +
+    "Here is a simple way to approach this topic:\n\n" +
+    "1. Start by understanding the basic definition.\n" +
+    "2. Identify the important concepts and key terms.\n" +
+    "3. Connect the concepts with real-life examples.\n" +
+    "4. Review the topic and practice explaining it in your own words.\n\n" +
+    "This is a demonstration response. Connect an AI API to receive real, topic-specific explanations.";
+
+}
+
+function saveNote() {
+
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteText").value.trim();
+
+  if (!title || !text) {
+    alert("Please enter both a title and your notes.");
+    return;
+  }
+
+  notes.push({title, text});
+
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteText").value = "";
+
+  renderNotes();
+
+}
+
+function renderNotes() {
+
+  const list = document.getElementById("notesList");
+
+  list.innerHTML = "";
+
+  notes.forEach((note, index) => {
+
+    const div = document.createElement("div");
+    div.className = "note";
+
+    const heading = document.createElement("strong");
+    heading.textContent = note.title;
+
+    const content = document.createElement("p");
+    content.textContent = note.text;
+    content.style.marginTop = "8px";
+
+    const remove = document.createElement("button");
+    remove.textContent = "Delete";
+    remove.className = "btn";
+    remove.style.marginTop = "10px";
+
+    remove.onclick = function() {
+      notes.splice(index, 1);
+      renderNotes();
+    };
+
+    div.append(heading, content, remove);
+    list.appendChild(div);
+
+  });
+
+  document.getElementById("notesCount").textContent = notes.length;
+
+}
+
+function generateQuiz() {
+
+  const topic = document.getElementById("quizTopic").value.trim();
+
+  if (!topic) {
+    alert("Please enter a subject.");
+    return;
+  }
+
+  quizzes++;
+
+  document.getElementById("quizCount").textContent = quizzes;
+
+  const result = document.getElementById("quizResult");
+
+  result.classList.remove("hidden");
+
+  result.textContent =
+    "Practice Quiz: " + topic + "\n\n" +
+    "1. What is the basic definition of " + topic + "?\n\n" +
+    "2. Explain two important concepts related to " + topic + ".\n\n" +
+    "3. Give a real-life example of " + topic + ".\n\n" +
+    "4. Why is " + topic + " important?\n\n" +
+    "5. Describe one challenge or limitation of " + topic + ".\n\n" +
+    "Demo quiz: Connect an AI API to generate subject-specific questions and answers.";
+
+}
+
+function addTask() {
+
+  const input = document.getElementById("taskInput");
+  const value = input.value.trim();
+
+  if (!value) {
+    alert("Please enter a task.");
+    return;
+  }
+
+  tasks.push(value);
+  input.value = "";
+
+  renderTasks();
+
+}
+
+function renderTasks() {
+
+  const list = document.getElementById("taskList");
+
+  list.innerHTML = "";
+
+  tasks.forEach((task, index) => {
+
+    const div = document.createElement("div");
+    div.className = "task";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+
+    const label = document.createElement("label");
+    label.textContent = task;
+
+    checkbox.onchange = function() {
+      label.style.textDecoration = checkbox.checked ? "line-through" : "none";
+      label.style.color = checkbox.checked ? "#777" : "#d5d5eb";
+    };
+
+    const remove = document.createElement("button");
+    remove.textContent = "✕";
+    remove.style.background = "none";
+    remove.style.border = "none";
+    remove.style.color = "#aaa";
+    remove.style.cursor = "pointer";
+    remove.style.marginLeft = "auto";
+
+    remove.onclick = function() {
+      tasks.splice(index, 1);
+      renderTasks();
+    };
+
+    div.append(checkbox, label, remove);
+    list.appendChild(div);
+
+  });
+
+  document.getElementById("taskCount").textContent = tasks.length;
+
+}
+
+</script>
+
+</body>
+</html>
